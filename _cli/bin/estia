@@ -1,0 +1,36 @@
+#! /usr/bin/env bash
+#
+# Hearth CLI
+
+source $HEARTH_HOME/_helpers/error.sh
+source $HEARTH_HOME/_cli/lib/usage.sh
+source $HEARTH_HOME/_cli/lib/edit.sh
+source $HEARTH_HOME/_cli/lib/list.sh
+source $HEARTH_HOME/_cli/lib/create.sh
+source $HEARTH_HOME/_cli/lib/enable.sh
+source $HEARTH_HOME/_cli/lib/disable.sh
+
+
+declare -A types
+types=(
+    [env]=env.d
+    [path]=paths.d
+    [alias]=aliases.d
+    [function]=functions.d
+)
+
+declare -A commands
+commands=(
+    [edit]=edit
+    [create]=create_recipe
+    [create-secret]=create_secret_recipe
+    [enable]=enable_recipe
+    [disable]=disable_recipe
+    [list]=list
+)
+
+# get command to execute
+command=$1
+shift
+
+${commands[$command]} "$@"

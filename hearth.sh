@@ -1,20 +1,59 @@
-#!/usr/bin/env bash
-#
 # Entry point of Hearth
 # Here we will load all aliases, paths and functions
 
-current_dir=$(dirname $0)
+#################################################
+# Return true if current shell is bash
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns:
+#   None
+#################################################
+is_bash() {
+    if type compgen >/dev/null 2>/dev/null; then
+        echo true
+    else
+        echo false
+    fi
+}
 
-source $current_dir/_helpers/include.sh
+#################################################
+# Return true if current shell is zsh
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns:
+#   None
+#################################################
+is_zsh() {
+    if type compdef >/dev/null 2>/dev/null; then
+        echo true
+    else
+        echo false
+    fi
+}
 
-include_if_exists $current_dir/env.sh
-include_symlinks $current_dir/env.d/enabled
+if [[ $(is_bash) = true ]]; then
+    export HEARTH_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+elif [[ $(is_zsh) = true ]]; then
+    export HEARTH_HOME=$(dirname $0)
+else
+    printf "Could not determine current shell\n" 1>&2
+    return
+fi
 
-include_if_exists $current_dir/aliases.sh
-include_symlinks $current_dir/aliases.d/enabled
+source $HEARTH_HOME/_helpers/include.sh
 
-include_if_exists $current_dir/paths.sh
-include_symlinks $current_dir/paths.d/enabled
+include_if_exists $HEARTH_HOME/env.sh
+include_symlinks $HEARTH_HOME/env.d/enabled
 
-include_if_exists $current_dir/functions.sh
-include_symlinks $current_dir/functions.d/enabled
+include_if_exists $HEARTH_HOME/aliases.sh
+include_symlinks $HEARTH_HOME/aliases.d/enabled
+
+include_if_exists $HEARTH_HOME/paths.sh
+include_symlinks $HEARTH_HOME/paths.d/enabled
+
+include_if_exists $HEARTH_HOME/functions.sh
+include_symlinks $HEARTH_HOME/functions.d/enabled

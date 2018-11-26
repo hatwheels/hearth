@@ -1,15 +1,14 @@
+# Open hearth in your editor
+
 #################################################
-# Run commands inside homestead through ssh
+# Open hearth in your editor
 # Globals:
 #   None
 # Arguments:
-#   url
-#   package_name
-#
+#   None
 # Returns:
 #   None
 #################################################
-homestead-run() {
-  CMD="cd code; $@"
-  vagrant ssh -c "$CMD"
+edit () {
+    $EDITOR $HEARTH_HOME
 }

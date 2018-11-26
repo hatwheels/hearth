@@ -1,15 +1,15 @@
+# Error helper functions
+
 #################################################
-# Run commands inside homestead through ssh
+# Print error message and exit
 # Globals:
 #   None
 # Arguments:
-#   url
-#   package_name
-#
+#   error
 # Returns:
 #   None
 #################################################
-homestead-run() {
-  CMD="cd code; $@"
-  vagrant ssh -c "$CMD"
+error() {
+    printf "$1" 1>&2
+        exit 1
 }
